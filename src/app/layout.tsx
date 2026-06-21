@@ -1,6 +1,54 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Alegreya_Sans,
+  Alegreya,
+  Roboto_Mono,
+} from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const robotoMonoRobotoMono = Roboto_Mono({
+  subsets: [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "latin",
+    "latin-ext",
+    "vietnamese",
+  ],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  variable: "--font-roboto-mono",
+});
+
+const alegreyaAlegreya = Alegreya({
+  subsets: [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese",
+  ],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-alegreya",
+});
+
+const alegreyaSansAlegreyaSans = Alegreya_Sans({
+  subsets: [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese",
+  ],
+  weight: ["400", "500", "700", "800", "900"],
+  variable: "--font-alegreya-sans",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +73,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        alegreyaSansAlegreyaSans.variable,
+        alegreyaAlegreya.variable,
+        robotoMonoRobotoMono.variable,
+      )}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
