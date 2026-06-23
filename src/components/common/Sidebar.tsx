@@ -51,7 +51,7 @@ export default function Sidebar() {
       {/* links */}
       <Link
         className="flex items-center h-9 w-auto hover:bg-accent gap-2  p-1.5 text-sm hover:text-foreground  overflow-hidden"
-        href={"*"}
+        href={"/create"}
       >
         <span className="h-8 w-8 flex  shrink-0 p-1  items-center justify-center rounded ">
           <Plus className="size-4 " />

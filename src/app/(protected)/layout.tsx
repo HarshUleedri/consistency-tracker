@@ -9,7 +9,7 @@ export default async function layout({
     <>
       <div className="flex">
         <Sidebar />
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
       </div>
     </>
   );

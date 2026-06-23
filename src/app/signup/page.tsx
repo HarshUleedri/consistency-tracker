@@ -11,7 +11,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-   const { data } = useSession();
+  const { data } = useSession();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -50,9 +50,9 @@ export default function SignUp() {
       setIsLoading(false);
     }
   }
-    if (!data) {
-      redirect("/");
-    }
+  if (!data?.user.id) {
+    redirect("/");
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center">

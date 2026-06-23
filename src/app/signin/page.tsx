@@ -47,7 +47,7 @@ export default function Login() {
 
   const togglePassword = () => setShowPassword(!showPassword);
 
-  if (!data) {
+  if (!data?.user.id) {
     redirect("/");
   }
   return (

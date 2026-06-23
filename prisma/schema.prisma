@@ -22,11 +22,33 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  habbit       Habbit[]
 
   @@unique([email])
   @@map("user")
 }
 
+model Habbit {
+  id String  @id @default(cuid())
+  title String
+  description String
+  startDate DateTime
+  endDate DateTime?
+  userId String
+  user  User @relation(fields: [userId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  completions HabbitCompletion[]
+}
+model HabbitCompletion {
+  id String @id @default(cuid())
+  date DateTime
+  habbitId String
+  habbit Habbit @relation(fields: [habbitId], references: [id])
+  createdAt DateTime  @default(now())
+  @@unique([habbitId, date])
+  
+}
 model Session {
   id        String   @id
   expiresAt DateTime
