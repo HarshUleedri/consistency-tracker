@@ -48,3 +48,32 @@ export async function createHabbit(
     };
   }
 }
+
+export async function getSingleHabbit(id: string) {
+  if (!id) {
+    return {
+      success: false,
+      message: "id is required",
+    };
+  }
+
+  const data = await prisma.habbit.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      completions: true,
+    },
+  });
+
+  if (!data) {
+    return {
+      success: false,
+      message: "failed to get habbit",
+    };
+  }
+  return {
+    success: true,
+    habbit: data,
+  };
+}
