@@ -77,3 +77,55 @@ export async function getSingleHabbit(id: string) {
     habbit: data,
   };
 }
+
+export async function toggleMark(habbitId: string, date: Date) {
+  if (!habbitId) {
+    return {
+      success: false,
+      message: "Habbit id is requeired",
+    };
+  }
+
+  if (!date) {
+    return {
+      success: false,
+      message: "Date is requeired",
+    };
+  }
+
+  try {
+    const exist = await prisma.habbitCompletion.findUnique({
+      where: {
+        habbitId_date: {
+          habbitId,
+          date: new Date(date),
+        },
+      },
+    });
+
+    if (exist) {
+      await prisma.habbitCompletion.delete({
+        where: { id: exist.id },
+      });
+
+      return {
+        success: true,
+        completed: false,
+      };
+    }
+
+    await prisma.habbitCompletion.create({
+      data: {
+        habbitId,
+        date: new Date(date),
+      },
+    });
+
+    return {
+      success: true,
+      completed: true,
+    };
+  } catch (error) {
+    throw new Error("Failed to Mark completion");
+  }
+}

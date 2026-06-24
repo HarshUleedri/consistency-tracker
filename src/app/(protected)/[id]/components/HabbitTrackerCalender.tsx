@@ -1,4 +1,5 @@
 "use client";
+import { toggleMark } from "@/lib/habbit.service";
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -7,9 +8,8 @@ import {
   format,
   isAfter,
   addMonths,
-  endOfDay,
 } from "date-fns";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const weekDays = ["Mon", "Tus", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -30,29 +30,48 @@ function getMonthRange(startDate: Date, endDate: Date | null) {
 function DayCell({
   date,
   completed,
-  onClick,
+  habbitId,
 }: {
   date: Date;
   completed: boolean;
-  onClick: () => void;
+  habbitId: string;
 }) {
+  const [initialState, setInitialState] = useState<boolean>(completed);
+
+  const handleToggle = async () => {
+    const previous = initialState;
+
+    setInitialState((prev) => !prev);
+
+    try {
+      await toggleMark(habbitId, date);
+    } catch (error) {
+      setInitialState(previous);
+    }
+  };
+
   return (
-    <div
-      className={`h-24  flex items-center ${date.getDate() === new Date().getDate() && " border border-blue-600 text-blue-700 text-5xl"} justify-center border rounded text-2xl  `}
+    <button
+      className={`h-24  flex items-center ${format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd") && " border border-blue-600 text-blue-700 text-5xl"} justify-center border rounded text-2xl  `}
       key={date.getTime()}
+      onClick={handleToggle}
     >
       {/* {date.getDate() === new Date().getDate()} */}
+
       {format(date, "d")}
-    </div>
+      {initialState && <p className="text-3xl text-red-600">X</p>}
+    </button>
   );
 }
 
 function MonthCalender({
   month,
   isCompleted,
+  habbitId,
 }: {
   month: Date;
   isCompleted: Date[];
+  habbitId: string;
 }) {
   const firstDay = startOfMonth(month);
   const lastDay = endOfMonth(month);
@@ -65,7 +84,7 @@ function MonthCalender({
 
   return (
     <div>
-      <h2>{format(month, "MMMM yyyy")} </h2>
+      <h2 className="my-6">{format(month, "MMMM yyyy")} </h2>
       <div className="grid grid-cols-7 gap-4 ">
         {weekDays.map((day) => (
           <div
@@ -92,10 +111,8 @@ function MonthCalender({
             <DayCell
               key={date.getDate()}
               date={date}
-              onClick={() => {
-                console.log("clicked");
-              }}
               completed={completed}
+              habbitId={habbitId}
             />
           );
         })}
@@ -108,20 +125,23 @@ export default function HabbitTrackerCalender({
   startDate,
   endDate,
   isCompleted,
+  habbitId,
 }: {
   startDate: Date;
   endDate: Date | null;
   isCompleted: Date[];
+  habbitId: string;
 }) {
   const MONTHS = getMonthRange(startDate, endDate);
 
   return (
-    <div>
+    <div className="">
       {MONTHS.map((month) => (
         <MonthCalender
           key={month.getTime()}
           month={month}
           isCompleted={isCompleted}
+          habbitId={habbitId}
         />
       ))}
     </div>

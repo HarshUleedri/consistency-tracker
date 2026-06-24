@@ -36,6 +36,7 @@ export default async function SingleHabbit({
         isCompleted={isCompleted || []}
         startDate={startDate ?? new Date()}
         endDate={endDate || null}
+        habbitId={id}
       />
     </div>
   );
