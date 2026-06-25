@@ -48,7 +48,6 @@ export async function createHabbit(
     };
   }
 }
-
 export async function getSingleHabbit(id: string) {
   if (!id) {
     return {
@@ -77,7 +76,37 @@ export async function getSingleHabbit(id: string) {
     habbit: data,
   };
 }
+export async function geteHabbits(userId: string) {
+  if (!userId) {
+    return {
+      success: false,
+      message: "userId is required",
+    };
+  }
 
+  const data = await prisma.habbit.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      description:true,
+      createdAt: true,
+    },
+  });
+
+  if (!data) {
+    return {
+      success: false,
+      message: "failed to get habbit",
+    };
+  }
+  return {
+    success: true,
+    habbits: data,
+  };
+}
 export async function toggleMark(habbitId: string, date: Date) {
   if (!habbitId) {
     return {

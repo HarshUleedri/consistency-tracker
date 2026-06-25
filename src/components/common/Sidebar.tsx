@@ -1,21 +1,34 @@
 "use client";
 import { useSession } from "@/lib/auth-client";
+import { geteHabbits } from "@/lib/habbit.service";
 import { PanelLeft, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Sidebar() {
   const { data } = useSession();
+  const { id: paramId } = useParams();
 
-  const { image, name } = data?.user || {};
+  const { image, name, id } = data?.user || {};
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [habbitList, setHabbitList] = useState<
+    { id: string; title: string; description: string; createdAt: Date }[]
+  >([]);
+
+  useEffect(() => {
+    (async function () {
+      const result = await geteHabbits(id || "");
+      setHabbitList(result?.habbits || []);
+    })();
+  }, [id]);
 
   return (
     <aside
-      className={`min-h-screen flex flex-col group/toggle relative  border-r border-muted-foreground/30 ${isOpen ? "w-52" : "w-12"} transition-[width]  duration-200 ease-in-out group `}
+      className={`max-h-screen h-screen flex flex-col group/toggle relative  border-r border-muted-foreground/30 ${isOpen ? "w-52" : "w-12"} transition-[width] sticky top-0  duration-200 ease-in-out group `}
     >
       {/* headers */}
       <div
@@ -66,8 +79,28 @@ export default function Sidebar() {
       <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="flex-1  "
-      ></div>
+        className="flex-1 h-full"
+      >
+        {isOpen && (
+          <div className="mt-4">
+            <h2 className="text-xs  px-4 ">Recent</h2>
+            <hr className="mt-2" />
+            <div className="flex flex-col overflow-y-auto overflow-x-hidden ">
+              {habbitList.map(({ title, id }) => (
+                <Link
+                  className={`hover:bg-accent rounded ${paramId === id && "bg-accent"} px-4 shrink-0`}
+                  href={`/${id}`}
+                  key={id}
+                >
+                  <span className="overflow-hidden whitespace-nowrap text-xs">
+                    {title}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* footer */}
       <div className="h-11 border-t   mt-auto flex items-center hover:bg-accent cursor-pointer gap-1 p-2 overflow-hidden ">

@@ -13,36 +13,55 @@ import { Calendar } from "@/components/ui/calendar";
 import { z } from "zod";
 import { createHabbit } from "@/lib/habbit.service";
 import { useSession } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function FormHabbit() {
   const { data: userData } = useSession();
+  const router = useRouter();
 
   const userId = userData?.user.id || "";
 
   const [formData, setFormData] = useState<{
     title: string;
     description: string;
-    startDate: Date;
+    startDate: Date | null;
     endDate: Date | null;
-  }>({ title: "", description: "", startDate: new Date(), endDate: null });
+  }>({ title: "", description: "", startDate: null, endDate: null });
 
   const [error, setError] = useState<string>("");
+
+  const minEndDate = formData.startDate
+    ? new Date(
+        new Date(formData.startDate).setDate(formData.startDate.getDate() + 7),
+      )
+    : undefined;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!formData.startDate) {
+      setError("Start Date is required");
+      return;
+    }
+
+    if (formData.endDate && minEndDate && formData.endDate < minEndDate) {
+      setError("End Date must be at least 7 days after Start Date");
+      return;
+    }
+
     const parsedData = z.object({
       title: z.string().min(1, "Title is required"),
       description: z.string().min(1, "Title is required"),
-      startDate: z.date(),
+      startDate: z.date({
+        error: "Start Date is required",
+      }),
       endDate: z.date().nullable(),
     });
 
-    const { data, success } = parsedData.safeParse(formData);
+    const { data, success, error: zodError } = parsedData.safeParse(formData);
 
     if (!success) {
-      setError("All Fields are required");
+      setError(zodError.issues[0].message);
       return;
     }
 
@@ -52,10 +71,10 @@ export default function FormHabbit() {
       setFormData({
         title: "",
         description: "",
-        startDate: new Date(),
+        startDate: null,
         endDate: null,
       });
-      redirect(`/${res.habbitId}`);
+      router.replace(`/${res.habbitId}`);
     }
   };
 
@@ -118,12 +137,31 @@ export default function FormHabbit() {
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={formData.startDate}
+                  selected={formData.startDate || undefined}
+                  disabled={{
+                    before: new Date(new Date().setHours(0, 0, 0, 0)),
+                  }}
                   onSelect={(date) => {
                     if (!date) return;
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (date < today) {
+                      setError(
+                        "Start Date can be only Today's or Date after it.",
+                      );
+                      return;
+                    }
+
+                    const newMinEndDate = new Date(date);
+                    newMinEndDate.setDate(newMinEndDate.getDate() + 7);
+                    setError("");
                     setFormData((prev) => ({
                       ...prev,
                       startDate: date,
+                      endDate:
+                        prev.endDate && prev.endDate < newMinEndDate
+                          ? null
+                          : prev.endDate,
                     }));
                   }}
                 />
@@ -152,8 +190,24 @@ export default function FormHabbit() {
                 <Calendar
                   mode="single"
                   selected={formData.endDate || undefined}
+                  disabled={
+                    minEndDate
+                      ? {
+                          before: minEndDate,
+                        }
+                      : {
+                          before: new Date(
+                            new Date().setHours(0, 0, 0, 0),
+                          ).setDate(new Date().getDate() + 7),
+                        }
+                  }
                   onSelect={(date) => {
                     if (!date) return;
+                    if (!formData.startDate) {
+                      setError("Please select Start Date first");
+                      return;
+                    }
+                    setError("");
                     setFormData((prev) => ({
                       ...prev,
                       endDate: date,

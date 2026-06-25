@@ -13,23 +13,45 @@ export default async function SingleHabbit({
 
   const isCompleted = completions?.map((item) => item.date);
 
+  const completedDays = isCompleted?.length ?? 0;
+
+  const totalDays =
+    endDate && startDate
+      ? Math.ceil(
+          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+        ) + 1
+      : undefined;
+
+  const pendingDays =
+    totalDays !== undefined ? totalDays - completedDays : undefined;
+
   return (
     <div className="p-8 space-y-2 ">
       <h1 className="text-4xl  ">{title}</h1>
       <p className="text-base truncate">{description}</p>
-      <div className="grid grid-cols-3 gap-4  ">
-        <div className="lg:w-1/3 p-4 border rounded ">
-          <span className="font-medium">Completed Days</span>
-          <div></div>
+      <div className="grid grid-cols-3 gap-12  ">
+        <div className=" p-4 border rounded ">
+          <span className="font-medium truncate">Completed Days</span>
+          <div>
+            <span className="text-4xl">{completedDays}</span>
+          </div>
         </div>
-        <div className="lg:w-1/3 p-4 border rounded">
-          <span className="font-medium">Pending Days</span>
-          <div></div>
-        </div>
-        <div className="lg:w-1/3 p-4 border rounded">
-          <span className="font-medium">Total Days</span>
-          <div></div>
-        </div>
+        {endDate && (
+          <>
+            <div className=" p-4 border rounded">
+              <span className="font-medium truncate">Pending Days</span>
+              <div>
+                <span className="text-4xl">{pendingDays}</span>
+              </div>
+            </div>
+            <div className=" p-4 border rounded">
+              <span className="font-medium truncate">Total Days</span>
+              <div>
+                <span className="text-4xl">{totalDays}</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <hr />
       <HabbitTrackerCalender

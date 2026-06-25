@@ -50,7 +50,7 @@ export default function SignUp() {
       setIsLoading(false);
     }
   }
-  if (!data?.user.id) {
+  if (data?.user.id) {
     redirect("/");
   }
 
