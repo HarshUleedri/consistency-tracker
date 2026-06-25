@@ -13,7 +13,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { z } from "zod";
 import { createHabbit } from "@/lib/habbit.service";
 import { useSession } from "@/lib/auth-client";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function FormHabbit() {
   const { data: userData } = useSession();
@@ -197,9 +197,9 @@ export default function FormHabbit() {
                         }
                       : {
                           before: new Date(
-                            new Date(
-                              new Date().setHours(0, 0, 0, 0),
-                            ).setDate(new Date().getDate() + 7),
+                            new Date(new Date().setHours(0, 0, 0, 0)).setDate(
+                              new Date().getDate() + 7,
+                            ),
                           ),
                         }
                   }
