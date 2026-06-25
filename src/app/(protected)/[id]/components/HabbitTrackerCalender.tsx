@@ -1,5 +1,5 @@
 "use client";
-import { getSingleHabbit, toggleMark } from "@/lib/habbit.service";
+import { toggleMark } from "@/lib/habbit.service";
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -37,7 +37,6 @@ function DayCell({
   habbitId: string;
 }) {
   const [initialState, setInitialState] = useState<boolean>(completed);
-
 
   const handleToggle = async () => {
     const previous = initialState;
