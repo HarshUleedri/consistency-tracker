@@ -197,8 +197,10 @@ export default function FormHabbit() {
                         }
                       : {
                           before: new Date(
-                            new Date().setHours(0, 0, 0, 0),
-                          ).setDate(new Date().getDate() + 7),
+                            new Date(
+                              new Date().setHours(0, 0, 0, 0),
+                            ).setDate(new Date().getDate() + 7),
+                          ),
                         }
                   }
                   onSelect={(date) => {
