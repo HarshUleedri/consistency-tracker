@@ -3,7 +3,7 @@ import Sidebar from "@/components/common/Sidebar";
 export default async function layout({
   children,
 }: {
-  children: React.ReactElement;
+  children: React.ReactNode;
 }) {
   return (
     <>
