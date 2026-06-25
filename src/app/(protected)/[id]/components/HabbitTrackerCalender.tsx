@@ -31,12 +31,27 @@ function DayCell({
   date,
   completed,
   habbitId,
+  startDate,
+  endDate,
 }: {
   date: Date;
   completed: boolean;
   habbitId: string;
+  startDate: Date;
+  endDate: Date | null;
 }) {
   const [initialState, setInitialState] = useState<boolean>(completed);
+
+  const beforeStartDate =
+    new Date(date).setHours(0, 0, 0, 0) <
+    new Date(startDate).setHours(0, 0, 0, 0);
+
+  console.log(new Date(date).setHours(0, 0, 0, 0));
+
+  const afterEndDate = endDate
+    ? new Date(date).setHours(0, 0, 0, 0) >
+      new Date(endDate).setHours(0, 0, 0, 0)
+    : false;
 
   const handleToggle = async () => {
     const previous = initialState;
@@ -52,7 +67,8 @@ function DayCell({
 
   return (
     <button
-      className={` min-h-28  flex items-center ${format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd") && " border border-blue-600 text-blue-700 "} justify-center border rounded text-2xl flex flex-col ${initialState ? "items-end justify-between border-red-700 text-lg" : ""} p-4   `}
+      disabled={beforeStartDate || afterEndDate}
+      className={` min-h-28  disabled:opacity-20 disabled:cursor-not-allowed flex items-center ${format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd") && " border border-blue-600 text-blue-700 "} justify-center border rounded text-2xl flex flex-col ${initialState ? "items-end justify-between border-red-700 text-lg" : ""} p-4   `}
       key={date.getTime()}
       onClick={handleToggle}
     >
@@ -81,10 +97,14 @@ function MonthCalender({
   month,
   isCompleted,
   habbitId,
+  startDate,
+  endDate,
 }: {
   month: Date;
   isCompleted: Date[];
   habbitId: string;
+  startDate: Date;
+  endDate: Date | null;
 }) {
   const firstDay = startOfMonth(month);
   const lastDay = endOfMonth(month);
@@ -122,6 +142,8 @@ function MonthCalender({
 
           return (
             <DayCell
+              startDate={startDate}
+              endDate={endDate}
               key={date.getDate()}
               date={date}
               completed={completed}
@@ -152,6 +174,8 @@ export default function HabbitTrackerCalender({
       {MONTHS.map((month) => (
         <MonthCalender
           key={month.getTime()}
+          startDate={startDate}
+          endDate={endDate}
           month={month}
           isCompleted={isCompleted}
           habbitId={habbitId}
