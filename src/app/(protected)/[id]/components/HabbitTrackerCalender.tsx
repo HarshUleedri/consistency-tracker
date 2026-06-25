@@ -54,6 +54,10 @@ function DayCell({
     : false;
 
   const handleToggle = async () => {
+    const currentDate = new Date().setHours(0, 0, 0, 0);
+
+    if (currentDate !== new Date(date).setHours(0, 0, 0, 0)) return;
+
     const previous = initialState;
 
     setInitialState((prev) => !prev);
@@ -68,7 +72,7 @@ function DayCell({
   return (
     <button
       disabled={beforeStartDate || afterEndDate}
-      className={` min-h-28  disabled:opacity-20 disabled:cursor-not-allowed flex items-center ${format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd") && " border border-blue-600 text-blue-700 "} justify-center border rounded text-2xl flex flex-col ${initialState ? "items-end justify-between border-red-700 text-lg" : ""} p-4   `}
+      className={` min-h-28  disabled:opacity-20 disabled:cursor-not-allowed flex items-center ${format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd") && " border border-blue-600 text-blue-700 "} justify-center border rounded text-2xl flex flex-col ${initialState ? "items-end justify-between border-red-700 text-lg" : ""} p-4  cursor-pointer  `}
       key={date.getTime()}
       onClick={handleToggle}
     >
