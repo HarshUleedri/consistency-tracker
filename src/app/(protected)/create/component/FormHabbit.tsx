@@ -222,7 +222,7 @@ export default function FormHabbit() {
         </div>
       </div>
       {error && <p className="my-4 text-sm text-red-600">{error}</p>}
-      <button className="px-4 cursor-pointer py-1.5 mt-4 rounded w-full bg-primary text-secondary text-lg">
+      <button className="px-4 cursor-pointer py-1.5  sm:mt-4 rounded w-full bg-primary text-secondary text-lg">
         Create
       </button>
     </form>

@@ -26,28 +26,30 @@ export default async function SingleHabbit({
     totalDays !== undefined ? totalDays - completedDays : undefined;
 
   return (
-    <div className="p-8 space-y-2 ">
-      <h1 className="text-4xl  ">{title}</h1>
-      <p className="text-base truncate">{description}</p>
+    <div className="p-4 sm:p-8 space-y-2 w-full">
+      <h1 className="text-4xl wrap-break-word text-balance ">{title}</h1>
+      <p className="text-base truncate wrap-break-word w-2/3 sm:w-5/6 ">
+        {description}
+      </p>
       <div className="grid grid-cols-3 gap-4  ">
-        <div className=" p-4 border rounded ">
-          <span className="font-medium truncate">Completed Days</span>
+        <div className=" p-2 sm:p-4 border  rounded ">
+          <span className="font-medium text-xs truncate">Completed Days</span>
           <div>
-            <span className="text-4xl">{completedDays}</span>
+            <span className="text-2xl sm:text-4xl">{completedDays}</span>
           </div>
         </div>
         {endDate && (
           <>
-            <div className=" p-4 border rounded">
-              <span className="font-medium truncate">Pending Days</span>
+            <div className="p-2 sm:p-4 border  rounded">
+              <span className="font-medium text-xs truncate">Pending Days</span>
               <div>
-                <span className="text-4xl">{pendingDays}</span>
+                <span className="text-2xl sm:text-4xl">{pendingDays}</span>
               </div>
             </div>
-            <div className=" p-4 border rounded">
-              <span className="font-medium truncate">Total Days</span>
+            <div className=" p-2 sm:p-4 border  rounded">
+              <span className="font-medium text-xs truncate">Total Days</span>
               <div>
-                <span className="text-4xl">{totalDays}</span>
+                <span className="text-2xl sm:text-4xl">{totalDays}</span>
               </div>
             </div>
           </>
