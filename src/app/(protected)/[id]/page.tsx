@@ -29,7 +29,7 @@ export default async function SingleHabbit({
     <div className="p-8 space-y-2 ">
       <h1 className="text-4xl  ">{title}</h1>
       <p className="text-base truncate">{description}</p>
-      <div className="grid grid-cols-3 gap-12  ">
+      <div className="grid grid-cols-3 gap-4  ">
         <div className=" p-4 border rounded ">
           <span className="font-medium truncate">Completed Days</span>
           <div>
