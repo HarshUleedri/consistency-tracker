@@ -82,7 +82,7 @@ export default function RootLayout({
         alegreyaSansAlegreyaSans.variable,
         alegreyaAlegreya.variable,
         robotoMonoRobotoMono.variable,
-      )}
+      )} suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col ">
         <ThemeProvider

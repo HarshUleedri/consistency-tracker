@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import Logout from "./Logout";
 
 export default function Sidebar() {
   const { data } = useSession();
@@ -14,13 +15,20 @@ export default function Sidebar() {
 
   const { image, name, id } = data?.user || {};
 
-  const [isOpen, setIsOpen] = useState<boolean>(() => {
-    if (window.innerWidth < 640) {
-      return false;
-    } else {
-      return true;
-    }
-  });
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsOpen(window.innerWidth >= 640);
+    };
+
+    handleResize(); // Set initial value
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [habbitList, setHabbitList] = useState<
     { id: string; title: string; description: string; createdAt: Date }[]
@@ -120,9 +128,11 @@ export default function Sidebar() {
           </div>
           {/* footer */}
           <div className=" border-t shrink-0">
+            <Logout isOpen={isOpen} />
             <ThemeToggle isOpen={isOpen} />
+
             <div className="h-11 border-t   mt-auto flex items-center hover:bg-accent cursor-pointer gap-1 p-2 overflow-hidden ">
-              <span className="w-8 h-8  flex items-center shrink-0 justify-center">
+              <span className="w-8 h-8 border rounded-full flex items-center shrink-0 justify-center">
                 <Image
                   width={100}
                   height={100}
