@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 export default function Sidebar() {
   const { data } = useSession();
@@ -103,26 +104,38 @@ export default function Sidebar() {
       </div>
 
       {/* footer */}
-      <div className="h-11 border-t   mt-auto flex items-center hover:bg-accent cursor-pointer gap-1 p-2 overflow-hidden ">
-        <span className="w-8 h-8  flex items-center shrink-0 justify-center">
-          <Image
-            width={100}
-            height={100}
-            src={
-              image ||
-              `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name || "default")}`
-            }
-            alt={`avatar`}
-            className="size-7  rounded-full"
-            unoptimized
-          />
-        </span>
-        <div
-          className={` ${isOpen ? "w-auto opacity-100" : "w-0 opacity-0"} shrink-0`}
-        >
-          <p className="text-sm font-medium truncate leading-tight whitespace-nowrap">
-            {name}
-          </p>
+      <div className=" border-t">
+        <div className="flex items-center gap-4 p-2">
+          <ThemeToggle />
+          {isOpen && (
+            <p className="text-sm tracking-tight whitespace-nowrap shrink-0 overflow-hidden">
+              {" "}
+              Theme
+            </p>
+          )}
+        </div>
+
+        <div className="h-11 border-t   mt-auto flex items-center hover:bg-accent cursor-pointer gap-1 p-2 overflow-hidden ">
+          <span className="w-8 h-8  flex items-center shrink-0 justify-center">
+            <Image
+              width={100}
+              height={100}
+              src={
+                image ||
+                `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name || "default")}`
+              }
+              alt={`avatar`}
+              className="size-7  rounded-full"
+              unoptimized
+            />
+          </span>
+          <div
+            className={` ${isOpen ? "w-auto opacity-100" : "w-0 opacity-0"} shrink-0`}
+          >
+            <p className="text-sm font-medium truncate leading-tight whitespace-nowrap">
+              {name}
+            </p>
+          </div>
         </div>
       </div>
     </aside>

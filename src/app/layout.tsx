@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/context/theme.context";
 
 const robotoMonoRobotoMono = Roboto_Mono({
   subsets: [
@@ -83,7 +84,16 @@ export default function RootLayout({
         robotoMonoRobotoMono.variable,
       )}
     >
-      <body className="min-h-full flex flex-col dark">{children}</body>
+      <body className="min-h-full flex flex-col ">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
