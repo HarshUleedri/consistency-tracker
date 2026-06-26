@@ -19,7 +19,7 @@ export default function Sidebar() {
   const [habbitList, setHabbitList] = useState<
     { id: string; title: string; description: string; createdAt: Date }[]
   >([]);
-  console.log(isOpen);
+
   useEffect(() => {
     (async function () {
       const result = await geteHabbits(id || "");
