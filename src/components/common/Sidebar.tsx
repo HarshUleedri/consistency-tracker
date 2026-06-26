@@ -105,16 +105,7 @@ export default function Sidebar() {
 
       {/* footer */}
       <div className=" border-t">
-        <div className="flex items-center gap-4 p-2">
-          <ThemeToggle />
-          {isOpen && (
-            <p className="text-sm tracking-tight whitespace-nowrap shrink-0 overflow-hidden">
-              {" "}
-              Theme
-            </p>
-          )}
-        </div>
-
+        <ThemeToggle isOpen={isOpen} />
         <div className="h-11 border-t   mt-auto flex items-center hover:bg-accent cursor-pointer gap-1 p-2 overflow-hidden ">
           <span className="w-8 h-8  flex items-center shrink-0 justify-center">
             <Image
