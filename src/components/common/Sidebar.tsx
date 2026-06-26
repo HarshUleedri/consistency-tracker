@@ -14,7 +14,13 @@ export default function Sidebar() {
 
   const { image, name, id } = data?.user || {};
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(() => {
+    if (window.innerWidth < 640) {
+      return false;
+    } else {
+      return true;
+    }
+  });
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [habbitList, setHabbitList] = useState<
     { id: string; title: string; description: string; createdAt: Date }[]
@@ -70,6 +76,9 @@ export default function Sidebar() {
           <Link
             className="flex items-center  h-9 w-auto hover:bg-accent gap-2  p-1.5 text-sm hover:text-foreground  overflow-hidden"
             href={"/create"}
+            onClick={() => {
+              if (window.innerWidth < 640) setIsOpen(false);
+            }}
           >
             <span className="h-8 w-8 flex  shrink-0 p-1  items-center justify-center rounded ">
               <Plus className="size-4 " />
@@ -93,9 +102,12 @@ export default function Sidebar() {
                 <div className="flex flex-col overflow-y-auto overflow-x-hidden ">
                   {habbitList.map(({ title, id }) => (
                     <Link
-                      className={`hover:bg-accent rounded ${paramId === id && "bg-accent"} px-4 shrink-0`}
+                      className={`hover:bg-accent  ${paramId === id && "bg-accent"} px-4 shrink-0`}
                       href={`/${id}`}
                       key={id}
+                      onClick={() => {
+                        if (window.innerWidth < 640) setIsOpen(false);
+                      }}
                     >
                       <span className="overflow-hidden whitespace-nowrap text-xs">
                         {title}

@@ -218,7 +218,7 @@ export default function HabbitTrackerCalender({
       </div>
       <div
         className={
-          view === "detailed" ? "grid grid-cols-1 gap-4" : "grid grid-cols-1 sm:grid-cols-0 gap-4 sm:gap-3"
+          view === "detailed" ? "grid grid-cols-1 gap-4" : "grid sm:grid-cols-3 gap-4 sm:gap-3"
         }
         // style={
         //   view === "compact"
