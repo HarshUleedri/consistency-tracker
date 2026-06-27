@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth/minimal";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 // If your Prisma file is located elsewhere, you can change the path
 import prisma from "./prisma";
+import { headers } from "next/headers";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -22,3 +23,12 @@ export const auth = betterAuth({
     },
   },
 });
+
+export const getUser = async (): Promise<string | undefined> => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const userId = session?.user.id;
+
+  return userId;
+};

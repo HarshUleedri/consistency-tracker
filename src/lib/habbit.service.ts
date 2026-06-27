@@ -91,7 +91,7 @@ export async function geteHabbits(userId: string) {
     select: {
       id: true,
       title: true,
-      description:true,
+      description: true,
       createdAt: true,
     },
   });
@@ -157,4 +157,87 @@ export async function toggleMark(habbitId: string, date: Date) {
   } catch (error) {
     throw new Error("Failed to Mark completion");
   }
+}
+export async function getTodaysHabbits(userId: string) {
+  if (!userId) {
+    return {
+      success: false,
+      message: "userId is required",
+    };
+  }
+
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const data = await prisma.habbit.findMany({
+    where: {
+      userId,
+      startDate: {
+        lte: today,
+      },
+      OR: [
+        {
+          endDate: null,
+        },
+        {
+          endDate: {
+            gte: today,
+          },
+        },
+      ],
+    },
+    include: {
+      completions: {
+        where: {
+          date: today,
+        },
+      },
+    },
+  });
+
+  console.log(typeof data[5]?.completions[0]?.date);
+  console.log(typeof today);
+  if (!data) {
+    return {
+      success: false,
+      message: "failed to get habbit",
+    };
+  }
+  return {
+    success: true,
+    habbits: data,
+  };
+}
+
+export async function getRecentActivies(userId: string) {
+  if (!userId) {
+    return {
+      success: false,
+      message: "userId is required",
+    };
+  }
+
+  const data = await prisma.habbitCompletion.findMany({
+    where: {
+      habbit: {
+        userId,
+      },
+    },
+    include: {
+      habbit: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 5,
+  });
+
+  if (!data) {
+    return {
+      success: false,
+      message: "failed to get habbit",
+    };
+  }
+  return {
+    success: true,
+    habbits: data,
+  };
 }
