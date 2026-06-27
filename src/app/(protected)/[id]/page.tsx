@@ -25,6 +25,22 @@ export default async function SingleHabbit({
   const pendingDays =
     totalDays !== undefined ? totalDays - completedDays : undefined;
 
+  let streak = 0;
+  const dateCounter = new Date(new Date().setHours(0, 0, 0, 0));
+  const uniqueCompletions = new Set(
+    completions?.map((c) => new Date(c.date).setHours(0, 0, 0, 0)),
+  );
+
+  if (startDate) {
+    while (startDate.setHours(0, 0, 0, 0) <= dateCounter.setHours(0, 0, 0, 0)) {
+      if (uniqueCompletions.has(dateCounter.getTime())) {
+        streak++;
+        dateCounter.setDate(dateCounter.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+  }
   return (
     <div className="p-4 sm:p-8 space-y-2 ">
       <h1 className="text-4xl wrap-break-word   ">{title}</h1>
@@ -52,6 +68,12 @@ export default async function SingleHabbit({
             </div>
           </>
         )}
+        <div className=" p-2 sm:p-4 border  rounded  ">
+          <span className="font-medium text-xs truncate">Current Streak</span>
+          <div>
+            <span className="text-2xl sm:text-4xl">🔥{streak}</span>
+          </div>
+        </div>
       </div>
       <hr />
       <HabbitTrackerCalender

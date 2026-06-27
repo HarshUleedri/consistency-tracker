@@ -241,3 +241,50 @@ export async function getRecentActivies(userId: string) {
     habbits: data,
   };
 }
+export async function getHabbitsWithCompletion(userId: string) {
+  if (!userId) {
+    return {
+      success: false,
+      message: "userId is required",
+    };
+  }
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const data = await prisma.habbit.findMany({
+    where: {
+      userId,
+      startDate: {
+        lte: today,
+      },
+      OR: [
+        {
+          endDate: null,
+        },
+        {
+          endDate: {
+            gte: today,
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      createdAt: true,
+      completions: true,
+      endDate: true,
+      startDate: true,
+    },
+  });
+
+  if (!data) {
+    return {
+      success: false,
+      message: "failed to get habbit",
+    };
+  }
+  return {
+    success: true,
+    habbits: data,
+  };
+}

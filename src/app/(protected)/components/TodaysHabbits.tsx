@@ -6,27 +6,16 @@ import Link from "next/link";
 export default async function TodaysHabbits() {
   const userId = await getUser();
   const { habbits = [] } = await getTodaysHabbits(userId || "");
-  // console.log(habbits[0].completions)
-
-  const total = habbits.length;
-  const overAllCompletion = habbits.filter(
-    (h) => h.completions.length > 0,
-  ).length;
-
-  const totaltaskCompletionPercentage =
-    total === 0 ? 0 : Math.round((overAllCompletion / total) * 100);
-
-  console.log(totaltaskCompletionPercentage);
   return (
     <div>
       <h2 className="text-xl mb-4">Todays Task </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 border rounded p-2 sm:p-4 ">
         {habbits.map((item) => {
           const isCompleted = item.completions.length > 0;
           return (
             <Link
               href={`/${item.id}`}
-              className="space-x-2 flex items-center"
+              className="space-x-2 hover:bg-muted flex items-center p-2 rounded"
               key={item.id}
             >
               {isCompleted ? (
@@ -42,17 +31,13 @@ export default async function TodaysHabbits() {
             </Link>
           );
         })}
+        {habbits.length === 0 && (
+          <p className="text-base sm:col-span-3 align-middle p-4 text-center font-mono ">
+            No Task Yet
+          </p>
+        )}
       </div>
-      
-        <h2 className="text-base mb-2">Total Progress</h2>
-        <div className="bg-muted border rounded-full h-2 ">
-          <div
-            style={{
-              transform: `scaleX(${totaltaskCompletionPercentage / 100})`,
-            }}
-            className="h-full block transform origin-left relative rounded-full bg-blue-500 "
-          ></div>
-        </div>
+      {/* <hr className="text-muted border" /> */}
     </div>
   );
 }
