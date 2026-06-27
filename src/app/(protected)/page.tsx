@@ -15,7 +15,7 @@ export default async function Home() {
             <TasksProgressForToday />
             <CurrentStreak />
           </div>
-           <TodaysHabbits />
+          <TodaysHabbits />
         </div>
         <RecentActivity />
       </div>

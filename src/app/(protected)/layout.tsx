@@ -15,7 +15,8 @@ export default async function layout({
 
   if (!user) {
     redirect("/signin");
-  }
+  } 
+  console.log("working")
   return (
     <>
       <div className="flex">

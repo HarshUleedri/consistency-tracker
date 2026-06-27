@@ -5,7 +5,6 @@ import React from "react";
 export default async function TasksProgressForToday() {
   const userId = await getUser();
   const { habbits = [] } = await getTodaysHabbits(userId || "");
-  // console.log(habbits[0].completions)
 
   const total = habbits.length;
   const overAllCompletion = habbits.filter(

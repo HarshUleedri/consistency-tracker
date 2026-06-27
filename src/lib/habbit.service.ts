@@ -192,9 +192,6 @@ export async function getTodaysHabbits(userId: string) {
       },
     },
   });
-
-  console.log(typeof data[5]?.completions[0]?.date);
-  console.log(typeof today);
   if (!data) {
     return {
       success: false,

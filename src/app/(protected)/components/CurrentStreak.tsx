@@ -50,7 +50,16 @@ export default async function CurrentStreak() {
   const userId = await getUser();
   const { habbits = [] } = await getHabbitsWithCompletion(userId || "");
 
-  // Prepare completion sets once
+  if (habbits.length === 0) {
+    return (
+      <div className="border rounded p-2 sm:p-4">
+        <h3 className="text-lg">Current Streak</h3>
+        <span className="text-2xl sm:text-xl">🔥0</span>
+      </div>
+    );
+  }
+
+  // Prepare habits with completion lookup sets
   const preparedHabits = habbits.map((habit) => ({
     ...habit,
     completionSet: new Set(
@@ -62,13 +71,25 @@ export default async function CurrentStreak() {
     ),
   }));
 
+  // Find earliest habit start date
+  const earliestStart = new Date(
+    Math.min(
+      ...preparedHabits.map((habit) => {
+        const start = new Date(habit.startDate);
+        start.setHours(0, 0, 0, 0);
+        return start.getTime();
+      }),
+    ),
+  );
+
+  earliestStart.setHours(0, 0, 0, 0);
+
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
   let streak = 0;
 
-  while (true) {
-    // Habits that were active on this day
+  while (currentDate.getTime() >= earliestStart.getTime()) {
     const activeHabits = preparedHabits.filter((habit) => {
       const start = new Date(habit.startDate);
       start.setHours(0, 0, 0, 0);
@@ -85,9 +106,7 @@ export default async function CurrentStreak() {
       );
     });
 
-    // Optional:
-    // If there were no active habits on this day,
-    // skip the day instead of breaking.
+    // If no habits existed on this day, just move to the previous day.
     if (activeHabits.length === 0) {
       currentDate.setDate(currentDate.getDate() - 1);
       continue;
@@ -108,7 +127,7 @@ export default async function CurrentStreak() {
   return (
     <div className="border rounded p-2 sm:p-4">
       <h3 className="text-lg">Current Streak</h3>
-      <span className="text-2xl sm:text-xl">🔥{streak}</span>
+      <span className="text-2xl sm:text-xl">🔥 {streak}</span>
     </div>
   );
 }
