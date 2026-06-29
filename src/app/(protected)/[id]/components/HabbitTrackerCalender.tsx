@@ -1,4 +1,5 @@
 "use client";
+import { isSameDate, normalizeDate } from "@/lib/day";
 import { toggleMark } from "@/lib/habbit.service";
 import {
   eachDayOfInterval,
@@ -43,20 +44,15 @@ function DayCell({
   view: View;
 }) {
   const [initialState, setInitialState] = useState<boolean>(completed);
+  const current = normalizeDate(date);
+  const beforeStartDate = current < startDate;
 
-  const beforeStartDate =
-    new Date(date).setHours(0, 0, 0, 0) <
-    new Date(startDate).setHours(0, 0, 0, 0);
+  const afterEndDate = endDate !== null && current > endDate;
 
-  const afterEndDate = endDate
-    ? new Date(date).setHours(0, 0, 0, 0) >
-      new Date(endDate).setHours(0, 0, 0, 0)
-    : false;
+  const today = normalizeDate(new Date());
 
   const handleToggle = async () => {
-    const currentDate = new Date().setHours(0, 0, 0, 0);
-
-    if (currentDate !== new Date(date).setHours(0, 0, 0, 0)) return;
+    if (!isSameDate(date, today)) return;
 
     const previous = initialState;
 
@@ -73,7 +69,7 @@ function DayCell({
     <button
       disabled={beforeStartDate || afterEndDate}
       className={` @container disabled:opacity-20 disabled:cursor-not-allowed flex items-center border rounded flex-col aspect-square
-        ${format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd") && " border border-blue-600 text-blue-700 "} 
+        ${isSameDate(date, today) && " border border-blue-600 text-blue-700 "} 
         ${initialState ? "items-end justify-between  border-red-700 " : "justify-center"}
         ${view === "compact" ? " p-1" : " p-1 sm:p-4"}
          cursor-pointer`}
@@ -147,18 +143,15 @@ function MonthCalender({
         ))}
 
         {days.map((date) => {
-          const dateString = format(date, "yyyy-MM-dd");
-
-          const completed = isCompleted.some(
-            (completedDate) =>
-              format(completedDate, "yyyy-MM-dd") === dateString,
+          const completed = isCompleted.some((completedDate) =>
+            isSameDate(completedDate, date),
           );
 
           return (
             <DayCell
               startDate={startDate}
               endDate={endDate}
-              key={date.getDate()}
+              key={date.getTime()}
               date={date}
               completed={completed}
               habbitId={habbitId}
@@ -218,7 +211,9 @@ export default function HabbitTrackerCalender({
       </div>
       <div
         className={
-          view === "detailed" ? "grid grid-cols-1 gap-4" : "grid sm:grid-cols-3 gap-4 sm:gap-3"
+          view === "detailed"
+            ? "grid grid-cols-1 gap-4"
+            : "grid sm:grid-cols-3 gap-4 sm:gap-3"
         }
         // style={
         //   view === "compact"

@@ -13,9 +13,7 @@ export function isSameDate(a: Date, b: Date): boolean {
 }
 
 export function addDays(date: Date, days: number): Date {
-  const copy = new Date(date);
+  const copy = normalizeDate(date);
   copy.setDate(copy.getDate() + days);
   return copy;
 }
-
-

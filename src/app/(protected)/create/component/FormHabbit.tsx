@@ -154,7 +154,7 @@ export default function FormHabbit() {
                     setError("");
                     setFormData((prev) => ({
                       ...prev,
-                      startDate: date,
+                      startDate: normalizeDate(date),
                       endDate:
                         prev.endDate && prev.endDate < newMinEndDate
                           ? null

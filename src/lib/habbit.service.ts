@@ -1,5 +1,6 @@
 "use server";
 
+import { normalizeDate } from "./day";
 import prisma from "./prisma";
 
 export async function createHabbit(
@@ -25,8 +26,8 @@ export async function createHabbit(
       data: {
         title,
         description,
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
+        startDate: startDate,
+        endDate: endDate ? endDate : null,
         userId,
       },
     });
@@ -108,6 +109,8 @@ export async function geteHabbits(userId: string) {
   };
 }
 export async function toggleMark(habbitId: string, date: Date) {
+  const normalizedDate = normalizeDate(date);
+
   if (!habbitId) {
     return {
       success: false,
@@ -127,7 +130,7 @@ export async function toggleMark(habbitId: string, date: Date) {
       where: {
         habbitId_date: {
           habbitId,
-          date: new Date(date),
+          date: normalizedDate,
         },
       },
     });
@@ -146,7 +149,7 @@ export async function toggleMark(habbitId: string, date: Date) {
     await prisma.habbitCompletion.create({
       data: {
         habbitId,
-        date: new Date(date),
+        date: normalizedDate,
       },
     });
 

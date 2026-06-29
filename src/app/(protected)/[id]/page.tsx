@@ -1,5 +1,6 @@
 import { getSingleHabbit } from "@/lib/habbit.service";
 import HabbitTrackerCalender from "./components/HabbitTrackerCalender";
+import { normalizeDate } from "@/lib/day";
 
 export default async function SingleHabbit({
   params,
@@ -26,7 +27,7 @@ export default async function SingleHabbit({
     totalDays !== undefined ? totalDays - completedDays : undefined;
 
   let streak = 0;
-  const dateCounter = new Date(new Date().setHours(0, 0, 0, 0));
+  const dateCounter = normalizeDate(new Date());
   const uniqueCompletions = new Set(
     completions?.map((c) => new Date(c.date).setHours(0, 0, 0, 0)),
   );
