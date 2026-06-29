@@ -14,6 +14,7 @@ import { z } from "zod";
 import { createHabbit } from "@/lib/habbit.service";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { addDays, normalizeDate } from "@/lib/day";
 
 export default function FormHabbit() {
   const { data: userData } = useSession();
@@ -31,9 +32,7 @@ export default function FormHabbit() {
   const [error, setError] = useState<string>("");
 
   const minEndDate = formData.startDate
-    ? new Date(
-        new Date(formData.startDate).setDate(formData.startDate.getDate() + 7),
-      )
+    ? addDays(formData.startDate, 7)
     : undefined;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -139,12 +138,11 @@ export default function FormHabbit() {
                   mode="single"
                   selected={formData.startDate || undefined}
                   disabled={{
-                    before: new Date(new Date().setHours(0, 0, 0, 0)),
+                    before: normalizeDate(new Date()),
                   }}
                   onSelect={(date) => {
                     if (!date) return;
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
+                    const today = normalizeDate(new Date());
                     if (date < today) {
                       setError(
                         "Start Date can be only Today's or Date after it.",
@@ -152,8 +150,7 @@ export default function FormHabbit() {
                       return;
                     }
 
-                    const newMinEndDate = new Date(date);
-                    newMinEndDate.setDate(newMinEndDate.getDate() + 7);
+                    const newMinEndDate = addDays(normalizeDate(date), 7);
                     setError("");
                     setFormData((prev) => ({
                       ...prev,
@@ -196,11 +193,7 @@ export default function FormHabbit() {
                           before: minEndDate,
                         }
                       : {
-                          before: new Date(
-                            new Date(new Date().setHours(0, 0, 0, 0)).setDate(
-                              new Date().getDate() + 7,
-                            ),
-                          ),
+                          before: addDays(normalizeDate(new Date()), 7),
                         }
                   }
                   onSelect={(date) => {
@@ -212,7 +205,7 @@ export default function FormHabbit() {
                     setError("");
                     setFormData((prev) => ({
                       ...prev,
-                      endDate: date,
+                      endDate: normalizeDate(date),
                     }));
                   }}
                 />
