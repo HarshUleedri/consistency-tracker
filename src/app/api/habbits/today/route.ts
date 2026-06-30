@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
     );
   }
   const today = normalizeDate(new Date(todaysParam));
+  console.log(today);
   if (!todaysParam) {
     return NextResponse.json(
       {

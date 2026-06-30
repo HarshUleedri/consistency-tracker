@@ -168,6 +168,7 @@ export async function getTodaysHabbits(userId: string, today: Date) {
       message: "userId is required",
     };
   }
+  
 
   const data = await prisma.habbit.findMany({
     where: {
