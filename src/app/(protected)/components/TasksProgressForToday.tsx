@@ -1,10 +1,12 @@
 import { getUser } from "@/lib/auth";
+import { normalizeDate } from "@/lib/day";
 import { getTodaysHabbits } from "@/lib/habbit.service";
 import React from "react";
 
 export default async function TasksProgressForToday() {
   const userId = await getUser();
-  const { habbits = [] } = await getTodaysHabbits(userId || "");
+  const todaydate = normalizeDate(new Date());
+  const { habbits = [] } = await getTodaysHabbits(userId || "", todaydate);
 
   const total = habbits.length;
   const overAllCompletion = habbits.filter(

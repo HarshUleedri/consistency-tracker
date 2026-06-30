@@ -29,7 +29,7 @@ export default async function SingleHabbit({
   let streak = 0;
   const dateCounter = normalizeDate(new Date());
   const uniqueCompletions = new Set(
-    completions?.map((c) => new Date(c.date).setHours(0, 0, 0, 0)),
+    completions?.map((c) => normalizeDate(c.date).getTime()) ?? [],
   );
 
   if (startDate) {

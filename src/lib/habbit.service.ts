@@ -161,7 +161,7 @@ export async function toggleMark(habbitId: string, date: Date) {
     throw new Error("Failed to Mark completion");
   }
 }
-export async function getTodaysHabbits(userId: string) {
+export async function getTodaysHabbits(userId: string, today: Date) {
   if (!userId) {
     return {
       success: false,
@@ -169,7 +169,6 @@ export async function getTodaysHabbits(userId: string) {
     };
   }
 
-  const today = new Date(new Date().setHours(0, 0, 0, 0));
   const data = await prisma.habbit.findMany({
     where: {
       userId,
@@ -241,14 +240,13 @@ export async function getRecentActivies(userId: string) {
     habbits: data,
   };
 }
-export async function getHabbitsWithCompletion(userId: string) {
+export async function getHabbitsWithCompletion(userId: string, today: Date) {
   if (!userId) {
     return {
       success: false,
       message: "userId is required",
     };
   }
-  const today = new Date(new Date().setHours(0, 0, 0, 0));
   const data = await prisma.habbit.findMany({
     where: {
       userId,

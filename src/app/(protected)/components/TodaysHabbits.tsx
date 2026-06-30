@@ -1,11 +1,14 @@
 import { getUser } from "@/lib/auth";
+import { normalizeDate } from "@/lib/day";
 import { getTodaysHabbits } from "@/lib/habbit.service";
 import { CheckCheck, Hourglass } from "lucide-react";
 import Link from "next/link";
 
 export default async function TodaysHabbits() {
   const userId = await getUser();
-  const { habbits = [] } = await getTodaysHabbits(userId || "");
+
+  const todayDate = normalizeDate(new Date());
+  const { habbits = [] } = await getTodaysHabbits(userId || "", todayDate);
   return (
     <div>
       <h2 className="text-xl mb-4">Todays Task </h2>

@@ -2,25 +2,12 @@ import { getUser } from "@/lib/auth";
 import { getRecentActivies } from "@/lib/habbit.service";
 import { format, formatDistanceToNow, isToday, isYesterday } from "date-fns";
 import { CheckCheck } from "lucide-react";
+import RecentActivityItem from "./RecentActivityItem";
 export default async function RecentActivity() {
   const userId = await getUser();
 
   const { habbits = [] } = await getRecentActivies(userId || "");
-  function formatRecentActivity(date: Date) {
-    const relative = formatDistanceToNow(date, {
-      addSuffix: true,
-    });
 
-    if (isToday(date)) {
-      return ` Completed Today •  ${format(date, "h:mm a")} (${relative})`;
-    }
-
-    if (isYesterday(date)) {
-      return `Completed Yesterday • ${format(date, "h:mm a")}`;
-    }
-
-    return `Completed ${format(date, "dd MMM")} • ${relative}`;
-  }
   return (
     <div className="p-2 sm:p-4 border rounded">
       <h3 className=" text-lg">Recent Activity</h3>
@@ -33,9 +20,7 @@ export default async function RecentActivity() {
               </span>
               {h.habbit.title}
             </p>
-            <span className="text-[10px]  font-mono">
-              {formatRecentActivity(h.createdAt)}
-            </span>
+            <RecentActivityItem createdAt={h.createdAt} />
           </div>
         ))}
         {habbits.length === 0 && (
