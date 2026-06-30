@@ -1,4 +1,4 @@
-"use Client";
+"use client";
 
 import { format, formatDistanceToNow, isToday, isYesterday } from "date-fns";
 
