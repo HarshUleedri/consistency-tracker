@@ -1,6 +1,5 @@
 import { getUser } from "@/lib/auth";
 import { getRecentActivies } from "@/lib/habbit.service";
-import { format, formatDistanceToNow, isToday, isYesterday } from "date-fns";
 import { CheckCheck } from "lucide-react";
 import RecentActivityItem from "./RecentActivityItem";
 export default async function RecentActivity() {
