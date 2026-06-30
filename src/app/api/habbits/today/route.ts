@@ -1,5 +1,4 @@
 import { getUser } from "@/lib/auth";
-import { normalizeDate } from "@/lib/day";
 import { getTodaysHabbits } from "@/lib/habbit.service";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,11 +20,9 @@ export async function GET(req: NextRequest) {
     );
   }
   const today = new Date(todaysParam);
-  console.log(today);
   const utcDate = new Date(
     Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()),
   );
-  console.log(utcDate, "new");
 
   if (!todaysParam) {
     return NextResponse.json(

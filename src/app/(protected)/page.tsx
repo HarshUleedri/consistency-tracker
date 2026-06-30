@@ -9,7 +9,6 @@ export default async function Home() {
   return (
     <div className="p-4 sm:p-8 space-y-12">
       <DashboardGreetings />
-      {normalizeDate(new Date()).getDate()}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="">
           <div className="grid grid-cols-1 sm:grid-cols-2 mb-6 gap-4">

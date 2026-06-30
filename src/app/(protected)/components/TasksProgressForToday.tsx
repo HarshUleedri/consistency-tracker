@@ -1,12 +1,41 @@
-import { getUser } from "@/lib/auth";
+"use client";
+import { useSession } from "@/lib/auth-client";
 import { normalizeDate } from "@/lib/day";
-import { getTodaysHabbits } from "@/lib/habbit.service";
-import React from "react";
+import { useEffect, useState } from "react";
 
-export default async function TasksProgressForToday() {
-  const userId = await getUser();
-  const todaydate = normalizeDate(new Date());
-  const { habbits = [] } = await getTodaysHabbits(userId || "", todaydate);
+export default function TasksProgressForToday() {
+  const todayDate = normalizeDate(new Date());
+
+  const { data } = useSession();
+
+  const userId = data?.user.id;
+  const [habbits, setHabbits] = useState<
+    Array<{
+      id: string;
+      title: string;
+      description: string;
+      startDate: Date;
+      endDate: Date | null;
+      userId: string;
+      createdAt: Date;
+      updatedAt: Date;
+      completions: Array<{
+        id: string;
+        createdAt: Date;
+        date: Date;
+        habbitId: string;
+      }>;
+    }>
+  >([]);
+  useEffect(() => {
+    (async function () {
+      const res = await fetch(
+        `/api/habbits/today?date=${encodeURIComponent(todayDate.toDateString())}`,
+      );
+      const data = await res.json();
+      setHabbits(data.habbits);
+    })();
+  }, [userId]);
 
   const total = habbits.length;
   const overAllCompletion = habbits.filter(

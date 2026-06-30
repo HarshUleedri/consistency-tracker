@@ -30,7 +30,6 @@ export default function TodaysHabbitsItems({ userId }: { userId: string }) {
       const res = await fetch(
         `/api/habbits/today?date=${encodeURIComponent(todayDate.toDateString())}`,
       );
-      console.log(todayDate.toDateString());
       const data = await res.json();
       setHabbits(data.habbits);
     })();
@@ -39,7 +38,6 @@ export default function TodaysHabbitsItems({ userId }: { userId: string }) {
     <>
       {habbits.map((item) => {
         const isCompleted = item.completions.length > 0;
-        console.log(item.completions);
         return (
           <Link
             href={`/${item.id}`}

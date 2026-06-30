@@ -1,6 +1,5 @@
 export default function DashboardGreetings() {
   const currentHour = new Date().getHours();
-
   return (
     <div className="space-y-2">
       <p className="text-xs font-mono font-extrabold   ">
@@ -10,13 +9,13 @@ export default function DashboardGreetings() {
         {currentHour < 12
           ? "Good Morning"
           : currentHour < 18
-            ? "Good Afternoo"
+            ? "Good Afternoon"
             : "Good Evening"}
         <span className="">👋</span>
       </h3>
 
       <p className="font-mono text-sm font-extralight">
-     Consistancy is the key to master anything.
+        Consistancy is the key to master anything.
       </p>
     </div>
   );
