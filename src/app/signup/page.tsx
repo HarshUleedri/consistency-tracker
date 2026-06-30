@@ -35,7 +35,6 @@ export default function SignUp() {
         password,
         callbackURL: "/signin",
       });
-      console.log(data);
 
       if (error) {
         setError(error.message || "Something went wrong");
@@ -61,7 +60,6 @@ export default function SignUp() {
       provider: "google",
       callbackURL: "/",
     });
-    console.log(data);
   };
 
   const handleGitLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
@@ -70,7 +68,6 @@ export default function SignUp() {
       provider: "github",
       callbackURL: "/",
     });
-    console.log(data, "github");
   };
 
   return (

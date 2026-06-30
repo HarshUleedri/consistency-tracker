@@ -20,8 +20,13 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-  const today = normalizeDate(new Date(todaysParam));
+  const today = new Date(todaysParam);
   console.log(today);
+  const utcDate = new Date(
+    Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()),
+  );
+  console.log(utcDate, "new");
+
   if (!todaysParam) {
     return NextResponse.json(
       {
@@ -31,7 +36,7 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-  const result = await getTodaysHabbits(userId, today);
+  const result = await getTodaysHabbits(userId, utcDate);
 
   return NextResponse.json(result);
 }

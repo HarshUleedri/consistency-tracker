@@ -28,7 +28,6 @@ export default function Login() {
         password,
         callbackURL: "/",
       });
-      console.log(data);
       if (error) {
         const { message } = error;
 
@@ -58,7 +57,6 @@ export default function Login() {
       provider: "google",
       callbackURL: "/",
     });
-    console.log(data);
   };
 
   const handleGitLogin = async (e: FormEvent<HTMLButtonElement>) => {
@@ -67,7 +65,6 @@ export default function Login() {
       provider: "github",
       callbackURL: "/",
     });
-    console.log(data, "github");
   };
 
   return (

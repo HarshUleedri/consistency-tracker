@@ -154,7 +154,13 @@ export default function FormHabbit() {
                     setError("");
                     setFormData((prev) => ({
                       ...prev,
-                      startDate: normalizeDate(date),
+                      startDate: new Date(
+                        Date.UTC(
+                          date.getFullYear(),
+                          date.getMonth(),
+                          date.getDate(),
+                        ),
+                      ),
                       endDate:
                         prev.endDate && prev.endDate < newMinEndDate
                           ? null
@@ -205,7 +211,13 @@ export default function FormHabbit() {
                     setError("");
                     setFormData((prev) => ({
                       ...prev,
-                      endDate: normalizeDate(date),
+                      endDate: new Date(
+                        Date.UTC(
+                          date.getFullYear(),
+                          date.getMonth(),
+                          date.getDate(),
+                        ),
+                      ),
                     }));
                   }}
                 />

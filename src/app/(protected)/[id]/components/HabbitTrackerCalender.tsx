@@ -57,14 +57,15 @@ function DayCell({
     const previous = initialState;
 
     setInitialState((prev) => !prev);
-
     try {
-      await toggleMark(habbitId, date);
+      await toggleMark(
+        habbitId,
+        new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())),
+      );
     } catch (error) {
       setInitialState(previous);
     }
   };
-
   return (
     <button
       disabled={beforeStartDate || afterEndDate}
@@ -143,10 +144,9 @@ function MonthCalender({
         ))}
 
         {days.map((date) => {
-          const completed = isCompleted.some((completedDate) =>
-            isSameDate(completedDate, date),
-          );
-
+          const completed = isCompleted.some((completedDate) => {
+            return isSameDate(completedDate, date);
+          });
           return (
             <DayCell
               startDate={startDate}

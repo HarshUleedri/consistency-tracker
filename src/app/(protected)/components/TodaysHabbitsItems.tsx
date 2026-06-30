@@ -1,6 +1,5 @@
 "use client";
 import { normalizeDate } from "@/lib/day";
-import { getTodaysHabbits } from "@/lib/habbit.service";
 import { CheckCheck, Hourglass } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -31,14 +30,16 @@ export default function TodaysHabbitsItems({ userId }: { userId: string }) {
       const res = await fetch(
         `/api/habbits/today?date=${encodeURIComponent(todayDate.toDateString())}`,
       );
+      console.log(todayDate.toDateString());
       const data = await res.json();
       setHabbits(data.habbits);
     })();
-  }, [userId, todayDate]);
+  }, [userId]);
   return (
     <>
       {habbits.map((item) => {
         const isCompleted = item.completions.length > 0;
+        console.log(item.completions);
         return (
           <Link
             href={`/${item.id}`}
