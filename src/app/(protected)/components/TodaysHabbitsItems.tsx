@@ -29,13 +29,12 @@ export default function TodaysHabbitsItems({ userId }: { userId: string }) {
   useEffect(() => {
     (async function () {
       const res = await fetch(
-        `/api/habbits/today?date=${encodeURIComponent(todayDate.toISOString())}`,
+        `/api/habbits/today?date=${encodeURIComponent(todayDate.toDateString())}`,
       );
       const data = await res.json();
       setHabbits(data.habbits);
     })();
   }, [userId, todayDate]);
-
   return (
     <>
       {habbits.map((item) => {
