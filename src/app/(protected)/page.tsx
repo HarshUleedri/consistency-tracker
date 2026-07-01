@@ -1,4 +1,3 @@
-import { normalizeDate } from "@/lib/day";
 import CurrentStreak from "./components/CurrentStreak";
 import DashboardGreetings from "./components/DashboardGreetings";
 import RecentActivity from "./components/RecentActivity";
