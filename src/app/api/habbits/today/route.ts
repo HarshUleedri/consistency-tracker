@@ -1,9 +1,9 @@
-import { getUser } from "@/lib/auth";
+import { getUserId } from "@/lib/auth";
 import { getTodaysHabbits } from "@/lib/habbit.service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const userId = await getUser();
+  const userId = await getUserId();
 
   if (!userId) {
     return NextResponse.json(

@@ -1,8 +1,8 @@
-// import { getUser } from "@/lib/auth";
+// import { getUserId } from "@/lib/auth";
 // import { getHabbitsWithCompletion,  } from "@/lib/habbit.service";
 
 // export default async function CurrentStreak() {
-//   const userId = await getUser();
+//   const userId = await getUserId();
 //   const { habbits } = await getHabbitsWithCompletion(userId || "");
 
 //   const completions =
@@ -43,12 +43,12 @@
 //   );
 // }
 
-// import { getUser } from "@/lib/auth";
+// import { getUserId } from "@/lib/auth";
 // import { normalizeDate } from "@/lib/day";
 // import { getHabbitsWithCompletion } from "@/lib/habbit.service";
 
 // export default async function CurrentStreak() {
-//   const userId = await getUser();
+//   const userId = await getUserId();
 
 //   const todaysDate = normalizeDate(new Date());
 //   const { habbits = [] } = await getHabbitsWithCompletion(
@@ -134,12 +134,12 @@
 //   );
 // }
 
-import { getUser } from "@/lib/auth";
+import { getUserId } from "@/lib/auth";
 import { addDays, normalizeDate } from "@/lib/day";
 import { getHabbitsWithCompletion } from "@/lib/habbit.service";
 
 export default async function CurrentStreak() {
-  const userId = await getUser();
+  const userId = await getUserId();
 
   // TODO: Eventually pass this from the client so it uses the user's local day.
   const today = normalizeDate(new Date());

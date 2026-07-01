@@ -1,9 +1,9 @@
-import { getUser } from "@/lib/auth";
+import { getUserId } from "@/lib/auth";
 
 import TodaysHabbitsItems from "./TodaysHabbitsItems";
 
 export default async function TodaysHabbits() {
-  const userId = await getUser();
+  const userId = await getUserId();
 
   return (
     <div>

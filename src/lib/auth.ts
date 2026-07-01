@@ -24,7 +24,7 @@ export const auth = betterAuth({
   },
 });
 
-export const getUser = async (): Promise<string | undefined> => {
+export const getUserId = async (): Promise<string | undefined> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

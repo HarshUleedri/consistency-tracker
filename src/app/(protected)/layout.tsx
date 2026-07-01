@@ -1,5 +1,6 @@
 import Sidebar from "@/components/common/Sidebar";
-import { auth } from "@/lib/auth";
+import { auth, getUserId } from "@/lib/auth";
+import { getUserIdDetails } from "@/lib/user";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -8,14 +9,16 @@ export default async function layout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
+  const user = await getUserIdDetails();
 
   if (!user) {
     redirect("/signin");
   }
+
+  if (!user.isOnboarded || !user.countryCode) {
+    redirect("/complete-profile");
+  }
+
   return (
     <>
       <div className="flex">
