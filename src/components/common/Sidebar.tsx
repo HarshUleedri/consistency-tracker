@@ -156,13 +156,37 @@ export default function Sidebar() {
           </div>
         </div>
       </aside>
-      <div className="sm:hidden w-screen overflow-hidden z-50 border-b fixed top-0 left-0">
-        <button
-          className="  bg-background  px-4 py-2 w-full"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <Menu className="size-6 p-0" />
+      <div className="sm:hidden flex gap-2   bg-background  items-center w-screen overflow-hidden z-50 border-b fixed top-0 left-0">
+        <button className=" px-2 py-2 w-fit" onClick={() => setIsOpen(!isOpen)}>
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            className="size-5 p-0 text-primary"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <g id="Menu / Menu_Duo_LG">
+                <path
+                  id="Vector"
+                  d="M3 15H21M3 9H21"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </g>
+            </g>
+          </svg>
         </button>
+        <Link href={"/"} className={`text-sm font-medium shrink-0 `}>
+          HU
+        </Link>
       </div>
     </>
   );

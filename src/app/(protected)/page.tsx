@@ -7,7 +7,7 @@ import TodaysHabbits from "./components/TodaysHabbits";
 
 export default async function Home() {
   return (
-    <div className="p-4 sm:p-8 space-y-12">
+    <div className="p-4 sm:p-8 space-y-6">
       <DashboardGreetings />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="">
