@@ -1,6 +1,6 @@
 "use client";
 import { COUNTRIES } from "@/lib/countries";
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,9 +8,12 @@ import {
 } from "../ui/dropdown-menu";
 import { Loader2Icon, Search } from "lucide-react";
 import { Button } from "../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 export default function SearchDropdown() {
   const [input, setInput] = useState<string>("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const activeElRef = useRef<HTMLDivElement | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -49,19 +52,53 @@ export default function SearchDropdown() {
       setIsLoading(false);
     }
   };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.key);
+    switch (e.key) {
+      case "ArrowUp":
+        e.preventDefault();
+        setCurrentIndex((prev) =>
+          prev === 0 ? searchedItem.length - 1 : prev - 1,
+        );
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        setCurrentIndex((prev) =>
+          prev === searchedItem.length - 1 ? 0 : prev + 1,
+        );
+        break;
+      case "Enter":
+        e.preventDefault();
+        setSelectedValue(searchedItem[currentIndex]);
+        break;
+
+      default:
+        break;
+    }
+  };
+  useEffect(() => {
+    if (!activeElRef.current) return;
+    activeElRef.current?.scrollIntoView({
+      block: "center",
+    });
+  }, [currentIndex]);
 
   return (
     <div className="flex flex-col items-start gap-1 w-full">
       <label className="text-base font-medium">Search Country</label>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="w-full mb-2">
+      <Popover >
+        <PopoverTrigger className="w-full mb-2">
           <button className="border rounded px-4 py-0.5 text-sm w-full text-start ">
             {selectedValue.name}
           </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        </PopoverTrigger>
+        <PopoverContent className="max-h-72 overflow-y-scroll p-0 ">
           <div className="w-full rounded border">
-            <div className="flex gap-2 items-center border-b py-2 px-2 sticky top-0 bg-background">
+            <div
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+              className="flex gap-2 items-center border-b py-2 px-2 sticky top-0 bg-background"
+            >
               <Search className="text-primary size-6.5 p-1  rounded" />
               <input
                 value={input}
@@ -70,12 +107,15 @@ export default function SearchDropdown() {
                 className=" outline-none border rounded font-medium px-4 py-0.5 text-sm w-full "
               />
             </div>
-            <div className="">
+            <div>
               {searchedItem.map((country, idx) => (
                 <div
-                  className="px-4 py-2 hover:bg-secondary text-base "
+                  className={`px-4 py-2 hover:bg-secondary text-base ${currentIndex === idx && "bg-secondary"}`}
                   key={idx}
                   onClick={() => setSelectedValue(country)}
+                  ref={currentIndex === idx ? activeElRef : null}
+                  onMouseEnter={() => setCurrentIndex(idx)}
+                  onMouseLeave={() => setCurrentIndex(0)}
                 >
                   {country.name}
                 </div>
@@ -85,8 +125,8 @@ export default function SearchDropdown() {
               )}
             </div>
           </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </PopoverContent>
+      </Popover>
       {error && <p className="text-sm text-red-600 text-start py-1">{error}</p>}
       <Button
         onClick={handleContinue}

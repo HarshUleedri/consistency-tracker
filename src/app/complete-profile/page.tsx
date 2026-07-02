@@ -13,9 +13,9 @@ export default async function page() {
       </div>
     );
   }
-  if (user.isOnboarded) {
-    return redirect("/");
-  }
+  // if (user.isOnboarded) {
+  //   return redirect("/");
+  // }
   return (
     <div className="flex items-center justify-center flex-col h-screen">
       <h1 className="text-3xl mb-6   ">Complete your Profile</h1>
