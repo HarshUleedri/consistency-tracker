@@ -93,7 +93,11 @@ export default function SearchDropdown() {
         disabled={!selectedValue.code || isLoading}
         className="w-full rounded disabled:cursor-not-allowed cursor-pointer disabled:opacity-50"
       >
-        {isLoading ? <Loader2Icon className="size-5" /> : "Continue"}
+        {isLoading ? (
+          <Loader2Icon className="size-5 animate-spin" />
+        ) : (
+          "Continue"
+        )}
       </Button>
     </div>
   );
